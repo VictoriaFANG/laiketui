@@ -12,34 +12,33 @@
 在此，我要感谢我的团队，基本上每天都在加班，终于在一个又一个的上线日期（PS：原因是不断地自我调试，不断地增加小功能，上线的日期一拖再拖）把我们的系统给弄上线了，感谢你们。
 
 #### 软件架构
-软件架构说明
+PHP5.6+
+MYSQL5.5+
+自主研发框架
 
+#### 功能列表 （:sob: 部分在开源版本中不包含，请移驾[运营版](http://www.laiketui.com/operate/)与[商业版](http://www.laiketui.com/commerce/)）
+1、产品管理（产品分类管理、产品品牌管理、产品列表管理）
+2、订单管理（订单列表、评价管理、退货管理、订单设置、打印设置）
+3、用户管理（用户列表、用户信息修改）
+ :sob: 4、插件管理（插件列表、拼团活动、抽奖活动）
+5、财务管理（提现申请、提现列表、充值列表）
+:sob: 6、优惠券管理（优惠券活动、优惠券列表）
+:sob: 7、签到管理（签到活动、签到记录）
+:sob: 8、拆红包管理（活动列表、拆红包记录）
+:sob: 9、砍价管理（砍价商品、砍价记录）
+10、轮播图管理
+11、新闻管理（新闻分类、新闻列表）
+12、文章管理
+13、公告管理（发布公告、公告列表、消息公告）
+14、系统管理（系统参数配置、推广图设置、热门关键词、管理员列表、新增管理员、权限设置）
+:sob: 15、拼团活动（发布活动、活动列表）
+:sob: 16、抽奖管理（发布活动、开奖管理）
 
 #### 安装教程
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. 官网查看：[http://www.laiketui.com/](http://www.laiketui.com/)
 
 #### 使用说明
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. 官网查看：[http://www.laiketui.com/help/](http://www.laiketui.com/help/)
 
-#### 参与贡献
-
-1. Fork 本项目
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [http://git.mydoc.io/](http://git.mydoc.io/)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
