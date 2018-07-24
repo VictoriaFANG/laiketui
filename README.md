@@ -43,3 +43,28 @@ MYSQL5.5+
 
 1. 官网查看：[http://www.laiketui.com/help/](http://www.laiketui.com/help/)
 
+
+
+#### 线上部署
+
+1.下载项目下/来客电商开源版后台/开源版来客电商后台.zip
+2.将文件解压至你的项目的根目录，其中包含两个文件：
++ open_source_laike.zip  ———— 核心源码文件 无需解压直接上传到服务器 上传后由php执行解压操作
++ index.php  核心系统文件  ————  首页逻辑处理等 直接上传到服务器
++ 具体安装教程可前往官网下载 [http://www.laiketui.com](http://www.laiketui.com)
+
+#### 来客电商微信小程序客户端截图
+
+![首页](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172029.jpg)
+
+![分类](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172012.jpg)
+
+![商品列表](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172020.jpg)
+
+![商品详情](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171938.jpg)
+
+![购物车](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172005.jpg)
+
+![订单中心](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171957.jpg)
+
+
