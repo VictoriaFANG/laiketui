@@ -47,7 +47,11 @@ MYSQL5.5+
 
 1. 官网查看：[http://www.laiketui.com/help/](http://www.laiketui.com/help/)
 
+#### 后台演示
 
+https://xiaochengxu.laiketui.com/duan/LKT/index.php?module=Login
+用户名：admin
+密码：000000
 
 #### 线上部署
 1. 下载项目下/来客电商开源版后台/开源版来客电商后台.zip
