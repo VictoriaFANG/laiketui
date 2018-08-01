@@ -57,7 +57,7 @@ MYSQL5.5+
 + index.php  核心系统文件  ————  首页逻辑处理等 直接上传到服务器
 + 具体安装教程可前往官网下载 [http://www.laiketui.com](http://www.laiketui.com)
 
-#### 来客电商微信小程序客户端截图
+#### 来客电商微信小程序客户端截图(扫码体验效果更好！！！！)
 
 ![扫码体验](https://xiaochengxu.laiketui.com/xiaochengxu.jpeg)
 
