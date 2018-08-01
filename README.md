@@ -59,6 +59,8 @@ MYSQL5.5+
 
 #### 来客电商微信小程序客户端截图
 
+![扫码体验](https://xiaochengxu.laiketui.com/xiaochengxu.jpeg)
+
 ![首页](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172029.jpg)
 
 ![分类](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172012.jpg)
