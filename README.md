@@ -386,5 +386,3 @@ MYSQL5.5+
 
 ![订单中心](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171957.jpg)
 
-
->>>>>>> e830db181f5cafeb84902e8b8c7f51a1ee00d29e
