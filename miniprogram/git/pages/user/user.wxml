@@ -1,0 +1,115 @@
+  <view class="body" wx:if="{{remind}}">
+    <view class='zong'>
+      <view class="spinner" >
+        <view class="spinner-container container1">
+          <view class="circle1"></view>
+          <view class="circle2"></view>
+          <view class="circle3"></view>
+          <view class="circle4"></view>
+        </view>
+        <view class="spinner-container container2">
+          <view class="circle1"></view>
+          <view class="circle2"></view>
+          <view class="circle3"></view>
+          <view class="circle4"></view>
+        </view>
+        <view class="spinner-container container3">
+          <view class="circle1"></view>
+          <view class="circle2"></view>
+          <view class="circle3"></view>
+          <view class="circle4"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 加载页面结束 -->
+  <block wx:else>
+    <view style='width:100%;height:100%'>
+      <!-- 用户基本信息 -->
+      <view class='user_top' style="background-color:{{bgcolor}}">
+        <view class='user_top_two'>
+          <image src="{{user.headimgurl ? user.headimgurl:'../../images/users.png'}}" />
+          <text class='user_mc'>{{user.wx_name}}</text>
+        </view>  
+        <!-- 我的订单 -->
+        <view class='user_dd' >
+          <view class='dd_stu'>
+            <navigator class="order" url="../order/order?currentTab=0&otype=pay">
+              <view>
+                <text>我的订单</text>
+              </view>
+              <view class='order_right'>
+                <view class='order_my'>查看全部订单</view>
+                <view class="iconfont icon-iconset0424"></view>
+              </view>
+            </navigator>
+            <view class='order_list'>
+              <navigator class='list' url="../order/order?currentTab=1&order_type1=payment&otype=pay">
+                <text class='tishi' wx:if="{{dfk_num > 0}}">{{dfk_num}}</text>
+                   <view class='dd_img'>
+                    <image src='../../images/icons/5.png'></image>
+                  </view>
+                <view style='margin-top:5px'>待付款</view>
+              </navigator>
+              <navigator class='list' url="../order/order?currentTab=2&order_type1=send&otype=pay">
+                <text class='tishi' wx:if="{{dfh_num > 0}}">{{dfh_num}}</text>
+                  <view class='dd_img'>
+                      <image src='../../images/icons/1.png'></image>
+                  </view>
+                <view style='margin-top:5px'>待发货</view>
+              </navigator>
+              <navigator class='list' url="../order/order?currentTab=3&order_type1=receipt&otype=pay">
+                <text class='tishi'  wx:if="{{dsh_num > 0}}">{{dsh_num}}</text>
+                  <view class='dd_img'>
+                  <image src='../../images/icons/3.png'></image>
+                  </view>
+                <view style='margin-top:5px'>待收货</view>
+              </navigator>
+              <navigator class='list' url="../order/order?currentTab=4&order_type1=evaluate&otype=pay">
+                <text class='tishi' wx:if="{{dpj_num > 0}}">{{dpj_num}}</text>
+                  <view class='dd_img'>
+                    <image src='../../images/icons/4.png'></image>
+                  </view>
+                <view style='margin-top:5px'>待评价</view>
+              </navigator>
+              <navigator class='list' url="../return_goods/index?currentTab=0&otype=whole">
+                 <text class='tishi' wx:if="{{th > 0}}">{{th}}</text> 
+                <view class='dd_img'>
+                    <image src='../../images/icons/2.png'></image>
+                </view>
+                <view style='margin-top:5px'>退货</view>
+              </navigator>
+            </view> 
+          </view>   
+          <view class="function" style='background:#fff'>
+            <block wx:for="{{list}}" wx:key="{{item.id}}">
+              <navigator class="function_list" url="../{{item.url}}">
+                <view class='function_left'>
+                  <image style="width: 25px;height: 25px;margin: auto;" src='../../images/icons/{{item.icon}}'></image>
+                  <view class='function_text'>{{item.text}} </view>
+                </view>
+                <view class='function_right jiantou'>
+                  <image src="../../images/x_right.png"></image>
+                </view>
+              </navigator>
+            </block>
+          </view>
+          <view class='bottom'>
+            <view class='bottom_1'><image src="{{logo}}"></image></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+<!-- 自定义弹框开始 -->
+  <view wx:if="{{userlogin}}" class="mask"></view>
+  <view wx:if="{{userlogin}}" class="model">
+    <view class="modelTitle">
+    获取微信授权信息
+    </view>
+    <view class="modelBody">微信登录需要获取您的用户信息，请前往设置</view>
+    <view class="btns" style='border-radius:10px;'>
+      <button open-type="getUserInfo" style="color:#00CD00;background-color: #fff;border-radius:0 0 10px 10px;" class="agree" bindgetuserinfo="agreeGetUser" lang="zh_CN">去设置</button>
+    </view>  
+  </view> 
+<!-- 自定义弹框结束 --> 
