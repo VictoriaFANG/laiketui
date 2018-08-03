@@ -5,10 +5,10 @@ App({
     appKey:"", // 小程序密钥
     purchase: 0,//设置购物车刷新
     indexchase: false,//设置首页刷新
-    // 后台请求接口路径  如需修改系统请求路径还需要修改request.js中的url
+    // 线上后台请求接口路径  下载后修改此路径
     ceshiUrl: "http://test.com/LKT/index.php?module=api&software_name=3&edition=1.0", 
-    // 本地后台请求接口路径
-    localhost: 'http://localhost/LKT/index.php?module=api', 
+    // 本地测试时使用后台请求接口路径
+    // localhost: 'http://localhost/LKT/index.php?module=api', 
   },
   onLaunch: function () {
     //调用API从本地缓存中获取数据
