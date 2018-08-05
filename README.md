@@ -49,7 +49,8 @@ MYSQL5.5+
 
 1. 官网查看：[http://www.laiketui.com/help/](http://www.laiketui.com/help/)
 
-
+#### QQ交流群
+340645969
 
 #### 线上部署
 1. 进入目录/app 下载后台代码
