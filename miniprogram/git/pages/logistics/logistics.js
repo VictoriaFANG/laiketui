@@ -18,7 +18,7 @@ Page({
     var that = this;
 
     wx.setNavigationBarColor({
-      frontColor: '#ffffff',
+      frontColor: app.d.frontColor,
       backgroundColor: app.d.bgcolor, //页面标题为路由参数
       animation: {
         duration: 400,

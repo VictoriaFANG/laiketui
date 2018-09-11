@@ -24,30 +24,23 @@
     </view>
 </view>
 <!-- 加载页面结束 -->
-  <block wx:else>
-
-    <view class="search_no" wx:if="{{shopList.length < 1}}">
-            <view><image class='scimg' style="margin-top: 25%;" src='/images/search_no.png'></image></view>
-            <view style='font-size:13px;color:#666;'>没有更多数据了</view>
-    </view>
-  <block wx:else>
-
-    <view class='sort-wrap fd'>
-      <view class="sort-btn {{select == 0 ? 'select' : ''}}" bindtap="default">
-        最新
+    <block wx:else>
+      <view class='sort-wrap fd'>
+        <view class="sort-btn {{select == 0 ? 'select' : ''}}" bindtap="default">
+          最新
+        </view>
+        <view class="sort-btn {{select == 1 ? 'select' : ''}}" data-index="{{daindex1}}" data-sel="{{daindex1}}" bindtap="choosesort1">
+          销量
+          <image src="{{imageurl1}}"></image>
+        </view>
+        <view class="sort-btn {{select == 2 ? 'select' : ''}}" data-index="{{daindex2}}" bindtap="choosesort2">
+          价格
+          <image src="{{imageurl2}}"></image>
+        </view>
+        <view class='sort-btn'>
+         <view class='iconfont {{xianshi}}' bindtap="tabchage"> </view>
+        </view>
       </view>
-      <view class="sort-btn {{select == 1 ? 'select' : ''}}" data-index="{{daindex1}}" data-sel="{{daindex1}}" bindtap="choosesort1">
-        销量
-        <image src="{{imageurl1}}"></image>
-      </view>
-      <view class="sort-btn {{select == 2 ? 'select' : ''}}" data-index="{{daindex2}}" bindtap="choosesort2">
-        价格
-        <image src="{{imageurl2}}"></image>
-      </view>
-      <view class='sort-btn'>
-        <view class='iconfont {{xianshi}}' bindtap="tabchage"> </view>
-      </view>
-    </view>
 
     <view class="list">
           <view class="cont" style='padding-top:10px;'>
@@ -140,5 +133,4 @@
           </view>  
     </block>
     </view>
-    </block>
 </block>

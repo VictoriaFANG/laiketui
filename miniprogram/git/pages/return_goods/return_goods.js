@@ -14,7 +14,7 @@ Page({
    */
   onLoad: function (options) {
     wx.setNavigationBarColor({
-      frontColor: '#ffffff',
+      frontColor: app.d.frontColor,
       backgroundColor: app.d.bgcolor, //页面标题为路由参数
       animation: {
         duration: 400,
@@ -53,7 +53,7 @@ Page({
 
     if (formId != 'the formId is a mock one') {
       app.request.wxRequest({
-        url: app.d.ceshiUrl + '&action=product&m=save_formid',
+        url: '&action=product&m=save_formid',
         data: { from_id: formId, userid: app.globalData.userInfo.openid },
         method: 'post',
         success: function (res) {

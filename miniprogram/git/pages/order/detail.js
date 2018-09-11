@@ -89,8 +89,8 @@ Page({
         //如果是之前点击了钱包支付 需要还原金额
         var yuan = that.data.yuan;
         if (yuan) {
-          if (that.data.allow) {
-            yuan = Number(yuan) - Number(that.data.allow);
+          if (that.data.consumer_money) {
+            yuan = Number(yuan) - Number(that.data.consumer_money);
           }
           that.setData({
             paytype: check,
@@ -234,7 +234,7 @@ Page({
     console.log(options)
     this.get_plug();
 		wx.setNavigationBarColor({
-			frontColor: '#ffffff',
+			frontColor: app.d.frontColor,
 			backgroundColor: app.d.bgcolor, //页面标题为路由参数
 			animation: {
 				duration: 400,
@@ -243,7 +243,7 @@ Page({
 		})
 		this.setData({
 			orderId: options.orderId,
-			bgcolor: app.d.bgcolor,
+      bgcolor: '#FF6347',
 		})
 		this.loadProductDetail();
 	},
@@ -292,7 +292,7 @@ Page({
   sendFormid: function (fromid, page) {
     var that = this
     app.request.wxRequest({
-      url: app.d.ceshiUrl + '&action=groupbuy&m=getFormid',
+      url: '&action=groupbuy&m=getFormid',
       data: { from_id: fromid, userid: app.globalData.userInfo.openid, page: page },
       method: 'post',
       success: function () {
@@ -325,6 +325,7 @@ Page({
         var list= res.data.list;
         var z_price = Number(res.data.z_price);
         var pro_price = 0;
+        var red_packet = res.data.red_packet;
         for (var i = 0; i < list.length; i++) {
           pro_price = Number(pro_price) + Number(list[i].p_price) * Number(list[i].num); 
         }
@@ -348,7 +349,7 @@ Page({
 						role: res.data.role,
 						p_id: res.data.p_id,
 						coupon_money: res.data.coupon_money,
-						allow: res.data.allow,
+            consumer_money: res.data.consumer_money,
 						user_money: res.data.user_money,
 						coupon_activity_name: res.data.coupon_activity_name,
 						status_pid: res.data.pid,
@@ -356,6 +357,7 @@ Page({
             ptcode: res.data.ptcode,
             man_num: res.data.man_num,
             groupid: res.data.pid,
+            red_packet: red_packet,
 					});
 
 					//支付倒计时
@@ -697,7 +699,7 @@ Page({
 			method: 'post',
 			data: {
 				coupon_id: that.data.coupon_id, // 优惠券id
-				allow: that.data.allow, // 使用积分
+        consumer_money: that.data.consumer_money, // 使用积分
 				coupon_money: that.data.z_price, // 付款金额
 				order_id: that.data.sNo, // 订单号
 				user_id: app.globalData.userInfo.openid, // 微信id
@@ -756,7 +758,7 @@ Page({
     if (formId != 'the formId is a mock one') {
       var page = 'pages/product/detail'
       app.request.wxRequest({
-        url: app.d.ceshiUrl + '&action=product&m=save_formid',
+        url: '&action=product&m=save_formid',
         data: { from_id: formId, userid: app.globalData.userInfo.openid },
         method: 'post',
         success: function (res) {

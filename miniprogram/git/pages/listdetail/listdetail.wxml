@@ -24,6 +24,9 @@
 </view>
 <!-- 加载页面结束 -->
 <block wx:else>
+
+<image wx:if="{{bg != ''}}" class='class_img' src='{{bg}}'></image>
+
   <view class='sort-wrap fd' wx:if="{{shopList.length > 0}}">
     <view class="sort-btn {{select == 0 ? 'select' : ''}}" bindtap="default">
       最新
@@ -41,7 +44,7 @@
     </view>
   </view>
 
-  <view class="list" wx:if="{{shopList.length > 0}}">
+  <view class="list {{bg == '' ? 'mt90':''}}" wx:if="{{shopList.length > 0}}">
     <view class="cont"  style='padding-top:10px;'>
       <view  class="{{shu}}">
         <navigator class="pr {{shu}}" style='border:1px solid #EDEDED;' url="../product/detail?productId={{item.id}}&size={{item.sizeid}}" hover-class="changestyle" wx:for="{{shopList}}" wx:key="*this" data-id="{{item.id}}">

@@ -12,30 +12,26 @@ page{
 text{
   font-size: 16px;
 }
-/* .user_top{      
-  background-color: red;
-  text-align: center;
-  padding-top: 30px;
-  padding-bottom: 10px;
-} */
+.username_font{
+  font-size: 13px;
+}
 .user_mc{
-  margin-top:15px;
-font-size:32px;
-margin-left:35px;
-color: #fff;
+  /* margin-top:-35px; */
+  font-size:32px;
+  margin-left:35px;
+  color: #fff;
 }
 .user_top{
-  height:320rpx;
+  height:420rpx;
 }
 .user_top_two{
-  display: -webkit-flex;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  display:-webkit-flex;
+  display:flex;
+  flex-direction:row;
+  justify-content:flex-start;
   padding-left:20px;
-  padding-bottom:10px;
-  padding-top:5px;
-
+  padding-bottom:20px;
+  padding-top:10px;
 }
 .user_sz{
   display:flex;

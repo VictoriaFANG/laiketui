@@ -24,6 +24,7 @@ Page({
     select: 0,//选中
     sort: 0,// 1 asc 升序   0 desc 降序
     types: '刷新', // 点击更多、下拉上啦刷新
+    bg:''
   },
   //上拉
   onReachBottom: function () {
@@ -46,7 +47,7 @@ Page({
     //页面初始化 options为页面跳转所带来的参数
     if (objectId || title) {
       wx.setNavigationBarColor({
-        frontColor: '#ffffff',//
+        frontColor: app.d.frontColor,//
         backgroundColor: app.d.bgcolor //页面标题为路由参数
       })
       //更改头部标题
@@ -96,7 +97,8 @@ Page({
           var shoplist = res.data.pro;// 商品信息
           if (types == 0) {
             that.setData({
-              shopList: shoplist
+              shopList: shoplist,
+              bg: res.data.bg
             })
           } else {
             that.setData({
@@ -172,7 +174,7 @@ Page({
       },
     });
     wx.setNavigationBarColor({
-      frontColor: '#ffffff',//
+      frontColor: app.d.frontColor,//
       backgroundColor: app.d.bgcolor //页面标题为路由参数
     });
     wx.request({

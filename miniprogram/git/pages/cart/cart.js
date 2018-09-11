@@ -375,7 +375,7 @@ onLoad:function(options){
       user_id: app.globalData.userInfo.openid
     });
     wx.setNavigationBarColor({
-      frontColor: '#ffffff',//
+      frontColor: app.d.frontColor,//
       backgroundColor: app.d.bgcolor //页面标题为路由参数
     });
     this.loadProductData();

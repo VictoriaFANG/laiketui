@@ -13,7 +13,10 @@ page {
   box-sizing: border-box;
   padding: 5px 10px;
 }
-
+.class_img{
+  margin-top:90rpx;
+  width:100%;
+}
 .list-tab ul {
   display: flex;
   height: 72rpx;
@@ -92,7 +95,9 @@ page {
   justify-content: center;
   align-items: center;
 }
-
+.mt90{
+  margin-top: 90rpx;
+}
 .addcart{
   width: 80rpx;
   height: 80rpx;
@@ -100,7 +105,6 @@ page {
 .list{
   background: #fff;
   width: 100%;
-  margin-top: 90rpx;
 }
 .ban{
   width: 46%;

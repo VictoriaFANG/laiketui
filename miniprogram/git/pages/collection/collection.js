@@ -5,7 +5,7 @@ Page({
   },
   onLoad: function (options) {
     wx.setNavigationBarColor({
-      frontColor: '#ffffff',
+      frontColor: app.d.frontColor,
       backgroundColor: app.d.bgcolor, //页面标题为路由参数
       animation: {
         duration: 400,
@@ -97,7 +97,8 @@ Page({
         var status = res.data.status
         if (status == 1){
           that.setData({
-            list: res.data.list
+            list: res.data.list,
+            bgcolor: app.d.bf_color
           });
         }else{
           wx.showToast({

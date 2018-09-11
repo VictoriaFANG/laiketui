@@ -40,22 +40,24 @@ Page({
       icon: 'loading',
       duration: 1500,
     });
+
     app.request.wxRequest({
-      url: app.d.ceshiUrl + '&action=getcode&m=product_share',
+      url: '&action=getcode&m=product_share',
       data: { 
         product_img_path: that.data.itemData.photo_d,
         product_title: that.data.title,
         price: that.data.itemData.price_yh,
         yprice: that.data.itemData.price,
-        scene: 'productId=' + that.data.productId + '&openid=' + app.globalData.userInfo.user_id,
+        scene: 'productId=' + that.data.productId + '&userid=' + app.globalData.userInfo.user_id,
         path: 'pages/product/detail', 
         id: app.globalData.userInfo.user_id,
         pid: that.data.productId,
+        head: app.globalData.userInfo.avatarUrl,
         type:3
        },
       method: 'post',
       success: function (res) {
-        console.log(res)
+
         that.setData({
           maskHidden: true,
           imagePath: res.url,
@@ -102,6 +104,7 @@ Page({
   },
   // 传值
   onLoad: function (option) {
+    console.log(option)
     var scene = decodeURIComponent(option.scene);
     var that = this;
     if (scene != 'undefined' && scene.length > 1 && scene != '') {
@@ -115,10 +118,12 @@ Page({
     }
     that.setData({
       productId: option.productId,
+      userid: option.userid ? option.userid:false,
       choujiangid: option.choujiangid ? option.choujiangid : '',
       type1: option.type1 ? option.type1 : '',//判断是抽奖还是其他活动
       role: option.role ? option.role : '',
       size: option.size ? option.size : '',
+      earn: option.earn ? option.earn : false,
     });
     //显示数据
     that.loadProductDetail();
@@ -126,22 +131,7 @@ Page({
   // 属性选择
   onShow: function () {
     var that = this;
-    that.setData({
-      includeGroup: that.data.commodityAttr,
-    });
-    that.distachAttrValue(that.data.commodityAttr);
-    // 只有一个属性组合的时候默认选中  
-    if (that.data.commodityAttr.length == 1) {
-      for (var i = 0; i < that.data.commodityAttr[0].attrValueList.length; i++) {
-        that.data.attrValueList[i].selectedValue = that.data.commodityAttr[0].attrValueList[i].attrValue;
-      }
-      var sizeid = that.data.commodityAttr[0].priceId;
-      that.setData({
-        attrValueList: that.data.attrValueList,
-        sizeid: sizeid
-      });
-      that.setimg();
-    };
+
   },
   //接受formid
   getUserformid: function (e) {
@@ -153,7 +143,7 @@ Page({
   sendFormid: function (fromid, page) {
     var that = this
     app.request.wxRequest({
-      url: app.d.ceshiUrl + '&action=draw&m=getFormid',
+      url: '&action=draw&m=getFormid',
       data: { from_id: fromid, userid: app.globalData.userInfo.openid, page: page },
       method: 'post',
       success: function () {
@@ -166,18 +156,18 @@ Page({
     var that = this;
     var choujiangid = that.data.choujiangid;
     var openid = app.globalData.userInfo.openid;
-    console.log(app.globalData.userInfo)
+    console.log(app.globalData.userInfo,'openid')
     if (openid) {
       var bgcolor = app.d.bgcolor;
       wx.setNavigationBarColor({
-        frontColor: '#ffffff',
+        frontColor: app.d.frontColor,
         backgroundColor: bgcolor, // 页面标题为路由参数
         animation: {
           duration: 400,
           timingFunc: 'easeIn'
         }
       });
-
+      console.log(that.data.userid)
       wx.request({
         url: app.d.ceshiUrl + '&action=product&m=index',
         method: 'post',
@@ -187,8 +177,8 @@ Page({
           type1: that.data.type1,//判断是抽奖还是其他活动
           choujiangid: that.data.choujiangid,
           role: that.options.role ? that.options.role : '',
-
           size: that.data.size,
+          userid: that.data.userid
         },
         header: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -205,7 +195,7 @@ Page({
               itemData: pro,
               kucun:pro.num,
               bannerItem: pro.img_arr,
-              commodityAttr: res.data.commodityAttr,
+              share: res.data.share,
               title: pro.name,
               comments: res.data.comments,
               is_shou: res.data.type,
@@ -214,7 +204,10 @@ Page({
               role: that.data.role ? that.data.role : '',
               qj_price: res.data.qj_price,
               qj_yprice: res.data.qj_yprice,
+              attrList: res.data.attrList,
+              skuBeanList: res.data.skuBeanList
             });
+            that.onData();
           } else if (status == 3) {
             wx.showToast({
               title: res.data.err,
@@ -333,579 +326,191 @@ Page({
       url: '../cart/cart'
     })
   },
-  /* 获取数据 */
-  distachAttrValue: function (commodityAttr) {
-    // 把数据对象的数据（视图使用），写到局部内  
-    var attrValueList = this.data.attrValueList;
-    // 遍历获取的数据  
-    for (var i = 0; i < commodityAttr.length; i++) {
-      for (var j = 0; j < commodityAttr[i].attrValueList.length; j++) {
-        var attrIndex = this.getAttrIndex(commodityAttr[i].attrValueList[j].attrKey, attrValueList);
-        // 如果还没有属性索引为-1，此时新增属性并设置属性值数组的第一个值；索引大于等于0，表示已存在的属性名的位置  
-        if (attrIndex >= 0) {
-          // 如果属性值数组中没有该值，push新值；否则不处理  
-          if (!this.isValueExist(commodityAttr[i].attrValueList[j].attrValue, attrValueList[attrIndex].attrValues)) {
-            attrValueList[attrIndex].attrValues.push(commodityAttr[i].attrValueList[j].attrValue);
+
+  /**
+   * Sku核心算法
+   * 根据所有出当前类别之外的选择 判断按钮的enable ？ false or true
+   */
+  onData: function () {
+
+    var attrListIn = this.data.attrList;
+    for (var i = 0; i < attrListIn.length; i++) {
+      var attrListBig = attrListIn[i];
+
+      //当前类别之外的选择列表
+      var attrsOtherSelect = [];
+      for (var j = 0; j < attrListIn.length; j++) {
+        var attrListSmall = attrListIn[j];
+        if (attrListSmall.id != attrListBig.id) {
+          for (var k = 0; k < attrListSmall.attr.length; k++) {
+            var attrListSmallAttr = attrListSmall.attr[k];
+            if (attrListSmallAttr.enable && attrListSmallAttr.select) {
+              attrsOtherSelect.push(attrListSmallAttr);
+            }
           }
-        } else {
-          attrValueList.push({
-            attrKey: commodityAttr[i].attrValueList[j].attrKey,
-            attrValues: [commodityAttr[i].attrValueList[j].attrValue]
-          });
         }
-      }
-    }
-    for (var i = 0; i < attrValueList.length; i++) {
-      for (var j = 0; j < attrValueList[i].attrValues.length; j++) {
-        if (attrValueList[i].attrValueStatus) {
-          attrValueList[i].attrValueStatus[j] = true;
-        } else {
-          attrValueList[i].attrValueStatus = [];
-          attrValueList[i].attrValueStatus[j] = true;
-        }
-      }
-    }
-    this.setData({
-      attrValueList: attrValueList
-    });
-  },
-  getAttrIndex: function (attrName, attrValueList) {
-    // 判断数组中的attrKey是否有该属性值  
-    for (var i = 0; i < attrValueList.length; i++) {
-      if (attrName == attrValueList[i].attrKey) {
-        break;
-      }
-    }
-    return i < attrValueList.length ? i : -1;
-  },
-  isValueExist: function (value, valueArr) {
-    // 判断是否已有属性值  
-    for (var i = 0; i < valueArr.length; i++) {
-      if (valueArr[i] == value) {
-        break;
-      }
-    }
-    return i < valueArr.length;
-  },
-  /* 选择属性值事件 */
-  selectAttrValue: function (e) {
-    var attrValueList = this.data.attrValueList;
-    var index = e.currentTarget.dataset.index;//属性索引  
-    var key = e.currentTarget.dataset.key; // 属性类型
-    var value = e.currentTarget.dataset.value; // 属性名称
-    if (e.currentTarget.dataset.status || index == this.data.firstIndex) {
-      if (e.currentTarget.dataset.selectedvalue == e.currentTarget.dataset.value) {
-        // 取消选中  
-        this.disSelectValue(attrValueList, index, key, value);
-      } else {
-        // 选中  
-        this.selectValue(attrValueList, index, key, value);
       }
 
+      var enableIds = [];
+
+      var skuBeanListIn = this.data.skuBeanList;
+
+      for (var z = 0; z < skuBeanListIn.length; z++) {
+        var ism = true;
+        var skuBean = skuBeanListIn[z];
+
+        for (var j = 0; j < attrsOtherSelect.length; j++) {
+          var enable = false;
+          for (var k = 0; k < skuBean.attributes.length; k++) {
+
+            var goodAttrBean = skuBean.attributes[k];
+            if (attrsOtherSelect[j].attributeId == goodAttrBean.attributeId
+              && attrsOtherSelect[j].id == goodAttrBean.attributeValId) {
+              enable = true;
+              break;
+            }
+          }
+          ism = enable && ism;
+        }
+
+        if (ism) {
+          for (var o = 0; o < skuBean.attributes.length; o++) {
+            var goodAttrBean = skuBean.attributes[o];
+
+            if (attrListBig.id == goodAttrBean.attributeId) {
+              enableIds.push(goodAttrBean.attributeValId);
+            }
+          }
+        }
+      }
+
+      var integers = enableIds;
+      for (var s = 0; s < attrListBig.attr.length; s++) {
+        var attrItem = attrListBig.attr[s];
+
+        attrItem.enable = integers.indexOf(attrItem.id) != -1;
+
+      }
     }
+
+    // 重新赋值
+    this.setData({
+      attrList: attrListIn,
+      skuBeanList: skuBeanListIn
+    })
   },
-  /* 选中 */
-  selectValue: function (attrValueList, index, key, value, unselectStatus) {
+
+  /**
+   * 规格属性点击事件
+   */
+  onChangeShowState: function (event) {
     var that = this;
-    var xuan = [], xuan_num = 0;
-    attrValueList[index].selectedValue = value;
-    for (var m = 0; m < attrValueList.length; m++) {
-      if (attrValueList[m].selectedValue) {
-        xuan[m] = attrValueList[m].selectedValue;
-        xuan_num++;
-      } else {
-        attrValueList[m].selectedValue = '';
-        xuan[m] = '';
-      }
-    }
-    var includeGroup = [];
-    if (index == this.data.firstIndex && !unselectStatus) {
-      // 如果是第一个选中的属性值，则该属性所有值可选  
-      var commodityAttr = this.data.commodityAttr;
-      // 其他选中的属性值全都置空  
-      for (var i = 0; i < attrValueList.length; i++) {
-        for (var j = 0; j < attrValueList[i].attrValues.length; j++) {
-          attrValueList[i].selectedValue = '';
-        }
-      }
-    } else {
-      var commodityAttr = this.data.includeGroup;
-    }
-    //参考键名
-    var s_keys = ['型号', '规格', '颜色'];
-    // var k_keys = ['name', 'size', 'color'];
-    var keds = [];//可选词组
-    // 判断属性是否可选  根据点击的内容 选择对应属性
-    if (xuan_num == 1) {
-      for (var i = 0; i < commodityAttr.length; i++) {
-        for (var j = 0; j < commodityAttr[i].attrValueList.length; j++) {
-          if (commodityAttr[i].attrValueList[j].attrKey == key && commodityAttr[i].attrValueList[j].attrValue == value) {
-            includeGroup.push(commodityAttr[i]);
-          }
-        }
-      }
-    } else if (xuan_num == 2) {
-      var keys_num = 0;
-      for (var i = 0; i < s_keys.length; i++) {
-        if (s_keys[i] == key) {
-          keys_num = i;
-        }
-      }
+    var listItem = this.data.attrList;
+    var items = listItem[event.currentTarget.dataset.idx];
+    var item = items.attr[event.currentTarget.dataset.index];
 
-      var new_key = '', new_val = '';
-      for (var j = 0; j < xuan.length; j++) {
-        if (xuan[j] != '' && xuan[j] != value) {
-          console.log(s_keys[j], xuan[j]);
-          new_key = s_keys[j];
-          new_val = xuan[j];
-        }
-      }
-      commodityAttr = that.data.commodityAttr;
-
-      for (var i = 0; i < commodityAttr.length; i++) {
-        for (var j = 0; j < commodityAttr[i].attrValueList.length; j++) {
-          if (keys_num == 0) {
-            if (commodityAttr[i].attrValueList[j].attrKey == new_key && commodityAttr[i].attrValueList[j].attrValue == new_val) {
-              includeGroup.push(commodityAttr[i]);
-            }
-          }else{
-            if (commodityAttr[i].attrValueList[j].attrKey == key && commodityAttr[i].attrValueList[j].attrValue == value) {
-              includeGroup.push(commodityAttr[i]);
-            }
-          }
-        }
-      }
-
-      for (var i = 0; i < commodityAttr.length; i++) {
-          if (new_key == '型号' && key == '规格'){
-            if (commodityAttr[i].name == new_val && commodityAttr[i].size == value){
-              keds.push(commodityAttr[i].color);
-              for (var q = 0; q < commodityAttr.length; q++) {
-                if (commodityAttr[q].name == new_val && commodityAttr[q].color == commodityAttr[i].color) {
-                  keds.push(commodityAttr[q].size);
-                }
-              }
-            }
-          }
-          if (new_key == '型号' && key == '颜色') {
-            if (commodityAttr[i].name == new_val && commodityAttr[i].color == value) {
-              keds.push(commodityAttr[i].size);
-              for (var q = 0; q < commodityAttr.length; q++) {
-                if (commodityAttr[q].name == new_val && commodityAttr[q].size == commodityAttr[i].size) {
-                  keds.push(commodityAttr[q].color);
-                }
-              }
-            }
-          }
-
-          if (new_key == '颜色' && key == '规格') {
-            if (commodityAttr[i].color == new_val && commodityAttr[i].size == value) {
-              keds.push(commodityAttr[i].name);
-              for (var q = 0; q < commodityAttr.length; q++) {
-                if (commodityAttr[q].color == new_val && commodityAttr[q].name == commodityAttr[i].name) {
-                  keds.push(commodityAttr[q].size);
-                }
-              }
-            }
-          }
-          if (new_key == '颜色' && key == '型号') {
-            if (commodityAttr[i].color == new_val && commodityAttr[i].name == value) {
-              keds.push(commodityAttr[i].size);
-              for (var q = 0; q < commodityAttr.length; q++) {
-                if (commodityAttr[q].color == new_val && commodityAttr[q].size == commodityAttr[i].size) {
-                  keds.push(commodityAttr[q].name);
-                }
-              }
-            }
-          }
-
-          if (new_key == '规格' && key == '颜色') {
-            if (commodityAttr[i].size == new_val && commodityAttr[i].color == value) {
-              keds.push(commodityAttr[i].name);
-              for (var q = 0; q < commodityAttr.length; q++) {
-                if (commodityAttr[q].size == new_val && commodityAttr[q].name == commodityAttr[i].name) {
-                  keds.push(commodityAttr[q].color);
-                }
-              }
-            }
-          }
-          if (new_key == '规格' && key == '型号') {
-
-            if (commodityAttr[i].size == new_val && commodityAttr[i].name == value) {
-              keds.push(commodityAttr[i].color);
-              for (var q = 0; q < commodityAttr.length; q++) {
-                if (commodityAttr[q].name == new_val && commodityAttr[q].color == commodityAttr[i].color) {
-                  keds.push(commodityAttr[q].size);
-                }
-              }
-            }
-          }
-      }
-      console.log(keds);
-    } else { 
-      //选择三个的时候
-      var l_key = key,l_val = value;
-      for (var s = 0; s < xuan.length; s++) {
-        
-        if (s == 2) {
-          var new_key = s_keys[s], new_val = xuan[s];
-          key = s_keys[0]; value = xuan[0];
-        }else{
-          var new_key = s_keys[s], new_val = xuan[s];
-          key = s_keys[s + 1]; value = xuan[s + 1];
-        }
-        var commodityAttr = that.data.commodityAttr;
-
-        for (var i = 0; i < commodityAttr.length; i++) {
-          if (new_key == '型号' && key == '规格') {
-
-            if (commodityAttr[i].name == new_val && commodityAttr[i].size == value) {
-              keds.push(commodityAttr[i].color);
-            }
-          }
-          if (new_key == '型号' && key == '颜色') {
-
-            if (commodityAttr[i].name == new_val && commodityAttr[i].color == value) {
-              keds.push(commodityAttr[i].size);
-            }
-          }
-
-          if (new_key == '颜色' && key == '规格') {
-
-            if (commodityAttr[i].color == new_val && commodityAttr[i].size == value) {
-              keds.push(commodityAttr[i].name);
-            }
-          }
-          if (new_key == '颜色' && key == '型号') {
-
-            if (commodityAttr[i].color == new_val && commodityAttr[i].name == value) {
-              keds.push(commodityAttr[i].size);
-            }
-          }
-
-          if (new_key == '规格' && key == '颜色') {
-
-            if (commodityAttr[i].size == new_val && commodityAttr[i].color == value) {
-              keds.push(commodityAttr[i].name);
-            }
-          }
-          if (new_key == '规格' && key == '型号') {
-            if (commodityAttr[i].size == new_val && commodityAttr[i].name == value) {
-              keds.push(commodityAttr[i].color);
-            }
-          }
-        }
-      }
-
-      key = l_key;
-      value = l_val;
-      for (var i = 0; i < commodityAttr.length; i++) {
-        for (var j = 0; j < commodityAttr[i].attrValueList.length; j++) {
-          if (commodityAttr[i].attrValueList[j].attrKey == key && commodityAttr[i].attrValueList[j].attrValue == value) {
-            includeGroup.push(commodityAttr[i]);
-          }
-        }
-      }
-
+    if (!item.enable) {
+      return;
     }
 
-    attrValueList[index].selectedValue = value;
-    // 判断属性是否可选  
-    for (var i = 0; i < attrValueList.length; i++) {
-      for (var j = 0; j < attrValueList[i].attrValues.length; j++) {
-        attrValueList[i].attrValueStatus[j] = false;
-      }
+    var select = !item.select;
+
+    for (var i = 0; i < items.attr.length; i++) {
+      items.attr[i].select = false;
     }
-    for (var k = 0; k < attrValueList.length; k++) {
-      for (var i = 0; i < includeGroup.length; i++) {
-        for (var j = 0; j < includeGroup[i].attrValueList.length; j++) {
-          if (attrValueList[k].attrKey == includeGroup[i].attrValueList[j].attrKey) {
-            for (var m = 0; m < attrValueList[k].attrValues.length; m++) {
-              if (attrValueList[k].attrValues[m] == includeGroup[i].attrValueList[j].attrValue) {
-                attrValueList[k].attrValueStatus[m] = true;
-              }
-              for (var s = 0; s < keds.length; s++) {
-                if (attrValueList[k].attrValues[m] == keds[s]) {
-                    attrValueList[k].attrValueStatus[m] = true;
-                }
-              }
-            }
-          }
+
+    item.select = select;
+
+    // 获取点击属性列表
+    var canGetInfo = [];
+    for (var skuIndex = 0; skuIndex < listItem.length; skuIndex++) {
+      for (var skuIndexIn = 0; skuIndexIn < listItem[skuIndex].attr.length; skuIndexIn++) {
+        if (listItem[skuIndex].attr[skuIndexIn].enable && listItem[skuIndex].attr[skuIndexIn].select) {
+          canGetInfo.push(listItem[skuIndex].attr[skuIndexIn]);
         }
       }
     }
 
-    this.setData({
-      attrValueList: attrValueList,
-      includeGroup: includeGroup,
-      new_attrValueList: attrValueList
-    });
-    var count = 0;
-    for (var i = 0; i < attrValueList.length; i++) {
-      for (var j = 0; j < attrValueList[i].attrValues.length; j++) {
-        if (attrValueList[i].selectedValue) {
-          count++;
-          break;
+    var canGetInfoLog = "";
+
+    var skuBeanList = this.data.skuBeanList;
+
+    var haveSkuBean = [];
+    // 对应库存清单扫描
+    for (var skuBeanIndex = 0; skuBeanIndex < skuBeanList.length; skuBeanIndex++) {
+      var iListCount = 0;
+      for (var skuBeanIndexIn = 0; skuBeanIndexIn < skuBeanList[skuBeanIndex].attributes.length; skuBeanIndexIn++) {
+        if (canGetInfo.length == skuBeanList[skuBeanIndex].attributes.length) {
+          if (skuBeanList[skuBeanIndex].attributes[skuBeanIndexIn].attributeValId == canGetInfo[skuBeanIndexIn].id) {
+            iListCount++;
+          }
+        } else {
+          canGetInfoLog = "库存清单不存在此属性" + " ";
+
         }
       }
-    }
-    if (count < 2) {
-      // 第一次选中，同属性的值都可选  
-      this.setData({
-        firstIndex: index
-      });
-    } else {
-      this.setData({
-        firstIndex: -1
-      });
-    }
-    that.setimg();
-  },
-  /* 取消选中 */
-  disSelectValue: function (attrValueList, index, key, value) {
-    var commodityAttr = this.data.commodityAttr;
-    var includeGroup = this.data.includeGroup;
-    attrValueList[index].selectedValue = '';
-    var s_keys = ['型号', '规格', '颜色'];
-    var rew = 0;
-    var xuan = [], xuan_num = 0, keds = [];
-    // 判断属性是否可选  
-    for (var i = 0; i < attrValueList.length; i++) {
-      for (var j = 0; j < attrValueList[i].attrValues.length; j++) {
-        if (attrValueList[i].selectedValue != '') {
-          rew = rew + 1;
-        }
-        attrValueList[i].attrValueStatus[j] = true;
-      }
-      if (attrValueList[i].selectedValue) {
-        xuan[i] = attrValueList[i].selectedValue;
-        xuan_num++;
-      } else {
-        xuan[i] = '';
+      if (iListCount == skuBeanList[skuBeanIndex].attributes.length) {
+        haveSkuBean.push(skuBeanList[skuBeanIndex]);
       }
     }
 
-    var new_key = '', new_val='';
-    if (xuan_num == 2){
-      
-      if(index == 1){
-        new_key = s_keys[0];
-        new_val = xuan[0];
-        key = s_keys[2];
-        value = xuan[2];
-      }else if(index == 2){
-        new_key = s_keys[0];
-        new_val = xuan[0];
-        key = s_keys[1];
-        value = xuan[1];
-      }else{
-        new_key = s_keys[1];
-        new_val = xuan[1];
-        key = s_keys[2];
-        value = xuan[2];
-      }
-      for (var i = 0; i < commodityAttr.length; i++) {
-        if (new_key == '型号' && key == '规格') {
-          if (commodityAttr[i].name == new_val && commodityAttr[i].size == value) {
-            keds.push(commodityAttr[i].color);
-            for (var q = 0; q < commodityAttr.length; q++) {
-              if (commodityAttr[q].name == new_val && commodityAttr[q].color == commodityAttr[i].color) {
-                keds.push(commodityAttr[q].size);
-              }
-            }
-          }
-        }
-        if (new_key == '型号' && key == '颜色') {
-          if (commodityAttr[i].name == new_val && commodityAttr[i].color == value) {
-            keds.push(commodityAttr[i].size);
-            for (var q = 0; q < commodityAttr.length; q++) {
-              if (commodityAttr[q].name == new_val && commodityAttr[q].size == commodityAttr[i].size) {
-                keds.push(commodityAttr[q].color);
-              }
-            }
-          }
-        }
+    // console.log(haveSkuBean, "存在于库存清单");
 
-        if (new_key == '颜色' && key == '规格') {
-          if (commodityAttr[i].color == new_val && commodityAttr[i].size == value) {
-            keds.push(commodityAttr[i].name);
-            for (var q = 0; q < commodityAttr.length; q++) {
-              if (commodityAttr[q].color == new_val && commodityAttr[q].name == commodityAttr[i].name) {
-                keds.push(commodityAttr[q].size);
-              }
-            }
-          }
-        }
-        if (new_key == '颜色' && key == '型号') {
-          if (commodityAttr[i].color == new_val && commodityAttr[i].name == value) {
-            keds.push(commodityAttr[i].size);
-            for (var q = 0; q < commodityAttr.length; q++) {
-              if (commodityAttr[q].color == new_val && commodityAttr[q].size == commodityAttr[i].size) {
-                keds.push(commodityAttr[q].name);
-              }
-            }
-          }
-        }
-
-        if (new_key == '规格' && key == '颜色') {
-          if (commodityAttr[i].size == new_val && commodityAttr[i].color == value) {
-            keds.push(commodityAttr[i].name);
-            for (var q = 0; q < commodityAttr.length; q++) {
-              if (commodityAttr[q].size == new_val && commodityAttr[q].name == commodityAttr[i].name) {
-                keds.push(commodityAttr[q].color);
-              }
-            }
-          }
-        }
-        if (new_key == '规格' && key == '型号') {
-
-          if (commodityAttr[i].size == new_val && commodityAttr[i].name == value) {
-            keds.push(commodityAttr[i].color);
-            for (var q = 0; q < commodityAttr.length; q++) {
-              if (commodityAttr[q].name == new_val && commodityAttr[q].color == commodityAttr[i].color) {
-                keds.push(commodityAttr[q].size);
-              }
-            }
-          }
-        }
-      }
-
-    }else if(xuan_num ==1){
-      for (var i = 0; i < xuan.length; i++) {
-        if (xuan[i] != ''){
-          new_key = s_keys[i];
-          new_val = xuan[i];
-          index = i;
-        }
-      }
-      for (var i = 0; i < commodityAttr.length; i++) {
-        for (var j = 0; j < commodityAttr[i].attrValueList.length; j++) {
-          if (commodityAttr[i].attrValueList[j].attrKey == new_key && commodityAttr[i].attrValueList[j].attrValue == new_val) {
-            includeGroup.push(commodityAttr[i]);
-          }
-        }
-      }
-      this.setData({
-        firstIndex: index
-      });
+    for (var iox = 0; iox < canGetInfo.length; iox++) {
+      canGetInfoLog += canGetInfo[iox].attributeValue + " ";
     }
 
-    //先改数据在判断
-    for (var i = 0; i < attrValueList.length; i++) {
-      for (var j = 0; j < attrValueList[i].attrValues.length; j++) {
-        attrValueList[i].attrValueStatus[j] = false;
-      }
-    }
-    for (var k = 0; k < attrValueList.length; k++) {
-      for (var i = 0; i < includeGroup.length; i++) {
-        for (var j = 0; j < includeGroup[i].attrValueList.length; j++) {
-          if (attrValueList[k].attrKey == includeGroup[i].attrValueList[j].attrKey) {
-            for (var m = 0; m < attrValueList[k].attrValues.length; m++) {
-              if (attrValueList[k].attrValues[m] == includeGroup[i].attrValueList[j].attrValue) {
-                attrValueList[k].attrValueStatus[m] = true;
-              }
-              for (var s = 0; s < keds.length; s++) {
-                if (attrValueList[k].attrValues[m] == keds[s]) {
-                  attrValueList[k].attrValueStatus[m] = true;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    if(rew == 0){
-      var num = this.data.kucun;
-      var itemData = this.data.itemData;
-      itemData.num = num;
-      this.setData({
+    if (haveSkuBean.length != 0) {
+      // console.log(canGetInfoLog)
+      // canGetInfoLog += "价钱:" + haveSkuBean[0].price + " 库存量:" + haveSkuBean[0].count + " cid:" + haveSkuBean[0].cid;
+
+      var itemData = that.data.itemData;
+      itemData.photo_x = haveSkuBean[0].imgurl;
+      itemData.price_yh = haveSkuBean[0].price;
+      itemData.num = haveSkuBean[0].count;
+      var choujiangid = that.data.choujiangid;
+      var sizeid = haveSkuBean[0].cid;
+      // console.log(sizeid)
+      that.setData({
         itemData: itemData,
+        sizeid: sizeid,
+        choujiangid: choujiangid,
+        value: canGetInfoLog
+      });
+    } else {
+      // console.log('没选完')
+      that.setData({
+        sizeid: '',
+        value:''
       });
     }
-    this.setData({
-      includeGroup: commodityAttr,
-      attrValueList: attrValueList
-    });
 
+    // 重新赋值
+    this.setData({
+      attrList: listItem,
+      infoText: canGetInfoLog,
+    })
+
+    // 重新sku运算
+    this.onData();
   },
+
+
   /* 点击确定 */
   submit: function (e) {
     var that = this;
-    var value = [], xuan = [], attrValueList = this.data.attrValueList;
-    for (var i = 0; i < attrValueList.length; i++) {
-      if (!attrValueList[i].selectedValue) {
-        break;
-      }
-      value.push(that.data.attrValueList[i].selectedValue);
-      if (attrValueList[i].selectedValue) {
-        xuan[i] = attrValueList[i].selectedValue;
-      } else {
-        xuan[i] = '';
-      }
-    }
+    var sizeid = that.data.sizeid;
 
-    if (i < that.data.attrValueList.length) {
+    if (sizeid == '' || sizeid.length < 1) {
       wx.showToast({
-        title: '请完善属性！',
+        title: '请完善属性',
         icon: 'loading',
         duration: 1000
       })
     } else {
-      var commodityAttr = that.data.commodityAttr;
-      var size_statu = false;
-      for (var j = 0; j < that.data.commodityAttr.length; j++) {
-        if (commodityAttr[j].name == xuan[0] && commodityAttr[j].size == xuan[1] && commodityAttr[j].color == xuan[2]){
-          size_statu = true;
-        }
-      }
-      if (size_statu){
-        var type = e.target.dataset.type;
-        var sizeid = that.data.sizeid;
-        that.addShopCart(e, sizeid);
-      }else{
-        wx.showToast({
-          title: '库存不足，请重新选择！',
-          icon: 'none',
-          duration: 1000
-        })    
-      }
-    }
-  },
-  setimg: function (e) {
-    //设置数据 全部选好后替换图片和价格属性
-    var that = this;
-    var value = [];
-    for (var i = 0; i < this.data.attrValueList.length; i++) {
-      if (!this.data.attrValueList[i].selectedValue) {
-        break;
-      }
-      value.push(that.data.attrValueList[i].selectedValue);
-    }
-    if (i < that.data.attrValueList.length) {
-
-    } else {
-      //设置显示数据
-      for (var i = 0; i < that.data.commodityAttr.length; i++) {
-        var name = that.data.commodityAttr[i].attrValueList[0].attrValue;
-        var size = that.data.commodityAttr[i].attrValueList[1].attrValue;
-        var color = that.data.commodityAttr[i].attrValueList[2].attrValue;
-        if (name == value[0] && size == value[1] && color == value[2]) {
-          var itemData = that.data.itemData;
-          itemData.photo_x = that.data.commodityAttr[i].img;
-          itemData.price_yh = that.data.commodityAttr[i].price;
-          itemData.num = that.data.commodityAttr[i].stock;
-          var choujiangid = that.data.choujiangid;
-          var sizeid = that.data.commodityAttr[i].priceId;
-          console.log('属性id='+sizeid)
-          that.setData({
-            value: value,
-            itemData: itemData,
-            sizeid: sizeid,
-            choujiangid: choujiangid,
-            qj_price: itemData.price_yh
-          });
-        }
-      }
+      var type = e.target.dataset.type;
+      var sizeid = sizeid;
+      that.addShopCart(e, sizeid)
     }
   },
   addShopCart: function (e, sizeid) { 
@@ -1007,17 +612,19 @@ Page({
       })
     }
   },
+
+  
   onShareAppMessage: function (res) {
     var that = this;
     var id = that.data.productId;
     var type1 = that.data.type1;
     var uname = app.globalData.userInfo.nickName ? app.globalData.userInfo.nickName + '超值推荐 ' :'我发现一个好的东西 推荐给你们 ';
     var title = uname+that.data.title;
-    var referee_openid = app.globalData.userInfo.openid;
+    var referee_openid = app.globalData.userInfo.user_id;
     if (type1 == 1) {
       var drawid = that.data.choujiangid;
       if (res.from === 'button') {
-        // 来自页面内转发按 itemData.photo_x
+        // 来自页面内转发按 
       }
       return {
         title: title,
@@ -1053,7 +660,7 @@ Page({
       }
       return {
         title: title,
-        path: 'pages/product/detail?productId=' + id + '&referee_openid=' + referee_openid,
+        path: 'pages/product/detail?productId=' + id + '&userid=' + referee_openid,
         success: function (res) {
           console.log('转发成功');
           var animation = wx.createAnimation({
@@ -1187,11 +794,9 @@ Page({
 
   },
   add_fromid: function (e) {
-    // console.log(e.detail.formId);
-    // console.log(e);
+
     var that = this;
     var formId = e.detail.formId;
-
     var animation = wx.createAnimation({
       duration: 200,
       timingFunction: "linear",
@@ -1235,11 +840,11 @@ Page({
     if (formId != 'the formId is a mock one'){
       var page = 'pages/product/detail'
       app.request.wxRequest({
-        url: app.d.ceshiUrl + '&action=product&m=save_formid',
+        url: '&action=product&m=save_formid',
         data: { from_id: formId, userid: app.globalData.userInfo.openid},
         method: 'post',
         success: function (res) {
-          console.log(res)
+
         }
       })
     }
@@ -1280,20 +885,33 @@ Page({
   //点击保存到相册
   baocun: function () {
     var that = this;
-    console.log('用户点击保存');
-    console.log(that.data.itemData.photo_x);
+
     wx.getSetting({
       success(res) {
-        console.log(res)
         if (!res.authSetting['scope.writePhotosAlbum']) {
+
           wx.authorize({
             scope: 'scope.writePhotosAlbum',
             success() {
               console.log('授权成功')
+            },
+            fail: function (res) {
+
+              wx.openSetting({
+                success: (res) => {
+
+                   res.authSetting = {
+                     "scope.userInfo": true,
+                     "scope.userLocation": true,
+                     "scope.writePhotosAlbum": true
+                   }
+
+                }
+              })
             }
           })
         }else{
-          console.log('qqqqq')
+
         }
       }
     })
@@ -1302,7 +920,7 @@ Page({
       url: that.data.imagePath,
       success: function (res) {
         var tempFilePath = res.tempFilePath;
-        console.log(tempFilePath);
+
         wx.saveImageToPhotosAlbum({
           filePath: tempFilePath,
           success(res) {
@@ -1320,7 +938,7 @@ Page({
                   })
                 }
               }, fail: function (res) {
-                console.log(11111)
+  
               }
             })
           }

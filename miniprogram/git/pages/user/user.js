@@ -25,6 +25,7 @@ Page({
 		],
 		cont: 1,
 		remind: '加载中',
+    tjr:false,
 	},
 	//下拉刷新
 	onPullDownRefresh: function() {
@@ -35,14 +36,25 @@ Page({
 		}, 1500);
 		this.requestMyData();
 	},
+  copyText: function (t) { 
+    var a = t.currentTarget.dataset.text; 
+    wx.setClipboardData({ 
+      data: a, 
+      success: function () { 
+          wx.showToast({ 
+            title: "已复制" 
+            })
+          }
+        }) 
+    },
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: function(options) {
 		this.login();
 		wx.setNavigationBarColor({
-			frontColor: '#ffffff',
-			backgroundColor: app.d.bgcolor, //页面标题为路由参数
+      frontColor: app.d.frontColor,
+      backgroundColor: app.d.bf_color, //页面标题为路由参数7a896c app.d.bgcolor
 			animation: {
 				duration: 400,
 				timingFunc: 'easeIn'
@@ -50,7 +62,7 @@ Page({
 		});
 		var plug_ins = app.globalData.userInfo.plug_ins; // 插件
 		this.setData({
-			bgcolor: app.d.bgcolor, // 背景颜色
+      bgcolor: app.d.bf_color, // 背景颜色
 			plug_ins: plug_ins, // 插件
 		});
 		this.requestMyData();
@@ -106,7 +118,8 @@ Page({
 							dfk_num: res.data.dfk_num,
 							dpj_num: res.data.dpj_num,
 							dsh_num: res.data.dsh_num,
-							plug_ins: res.data.plug_ins
+							plug_ins: res.data.plug_ins,
+              tjr: res.data.tjr
 						});
 					}
 				} else {

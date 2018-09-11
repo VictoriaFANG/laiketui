@@ -96,9 +96,9 @@
         </view>
         <view wx:if="{{upstatus}}" class="bottom_1">
             <view class="button_1_1" bindtap='shouc'>移至收藏</view>
-            <view class="button_1_2" style='background:{{bgcolor}};border:1px solid {{bgcolor}};' bindtap='delarr'>删除</view>     
+            <view class="button_1_2" style='background:#f60;border:1px solid #f60;' bindtap='delarr'>删除</view>     
         </view>
-        <view wx:else class="button" style='background:{{bgcolor}};' bindtap='bindCheckout'>立即结算 </view>
+        <view wx:else class="button" style='background:#f60;' bindtap='bindCheckout'>立即结算 </view>
             
       </view>
 </view>

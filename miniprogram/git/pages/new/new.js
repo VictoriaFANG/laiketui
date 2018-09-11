@@ -208,13 +208,10 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       success: function (res) {
-        if (res.data.status == 1){
-          var shoplist = res.data.pro;
-          that.setData({
-            shopList: shoplist
-          })
-        }
-
+        var shoplist = res.data.pro;
+        that.setData({
+          shopList: shoplist
+        })
       },
       error: function (e) {
         wx.showToast({
@@ -296,7 +293,7 @@ Page({
       bgcolor: app.d.bgcolor,
     });
     wx.setNavigationBarColor({
-      frontColor: '#ffffff',//
+      frontColor: app.d.frontColor,//
       backgroundColor: app.d.bgcolor //页面标题为路由参数
     })
     //页面初始化 options为页面跳转所带来的参数
@@ -320,17 +317,15 @@ Page({
       success: function (res) {
         var shoplist = res.data.pro;
         var prolist = that.data.shopList;
-        if (res.data.status == 1) {
-          if (prolist.length > 1) {
-            that.setData({
-              page: page,
-              shopList: that.data.shopList.concat(shoplist)
-            });
-          } else {
-            that.setData({
-              shopList: shoplist
-            })
-          }
+        if (prolist.length > 1){
+          that.setData({
+            page: page,
+            shopList: that.data.shopList.concat(shoplist)
+          });
+        }else{
+          that.setData({
+            shopList: shoplist
+          })
         }
 
       },

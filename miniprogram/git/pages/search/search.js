@@ -35,6 +35,7 @@ Page({
         that.setData({
           cateItems: res.data.List,
           hotwords: res.data.hot,
+          curNav: res.data.List[0].cate_id
         });
         that.onReady();
       },
@@ -64,7 +65,7 @@ Page({
       color:app.d.bgcolor,
     })
     wx.setNavigationBarColor({
-      frontColor: '#ffffff',
+      frontColor: app.d.frontColor,
       backgroundColor: app.d.bgcolor, //页面标题为路由参数
       animation: {
         duration: 400,

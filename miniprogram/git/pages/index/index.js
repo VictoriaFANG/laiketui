@@ -16,7 +16,6 @@ Page({
     tabid:0,
     loading:false,
     remind: '加载中',
-    // 滑动
     showModal: false,
     plug: [],
   },
@@ -29,7 +28,7 @@ Page({
     }, 1800);
     this.onLoad();
   },
-  getMore: function () {
+  getMore: function (e) {
     var that = this;
     var page = that.data.page;
     var index = that.data.tabid;
@@ -67,6 +66,95 @@ Page({
         });
       }
     })
+  },
+  inputConfirm: function (e) {
+    var that = this, value = e.detail.value;
+      this.setData({
+        value: e.detail.value,
+      });
+
+      if (value != '') {
+        wx.navigateTo({
+          url: "../listdetail/listdetail?keyword=" + value
+        })
+      }
+  },
+  inputBlur: function (e) {
+    this.setData({
+      value: e.detail.value,
+    });
+  },
+  search_cancel: function () {
+    var that = this, value = this.data.value;
+    if (value != '' && value != 'undefined' && value) {
+      wx.navigateTo({
+        url: "../listdetail/listdetail?keyword=" + value
+      })
+    }else{
+      setTimeout(function () {
+         that.search_cancel();
+      }, 1000);
+    }
+
+  },
+  search: function () {
+    var that = this, value = this.data.value;
+    if (value != '') {
+      wx.navigateTo({
+        url: "../listdetail/listdetail?keyword=" + value
+      })
+    }
+  },
+  loadProductDetail: function () {
+    var that = this;
+    var openid = app.globalData.userInfo.openid ? app.globalData.userInfo.openid:false;
+    if (openid) {
+      wx.request({
+        url: app.d.ceshiUrl + '&action=Index&m=index',
+        method: 'post',
+        data: {
+          user_id: app.globalData.userInfo.user_id
+        },
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        success: function (res) {
+          var banner = res.data.banner; // 轮播图
+          var twoList = res.data.twoList;     //产品显示
+          var bgcolor = res.data.bgcolor;     //产品显示
+          var plug = res.data.plug;     //抽奖产品
+          var title = res.data.title;
+          app.d.bgcolor = bgcolor;
+          var arr = Object.keys(twoList[0].distributor);
+          console.log(arr.length); 
+          that.setData({
+            distributor: arr,
+            banner: banner,
+            twoList: twoList,
+            bgcolor: bgcolor,
+            plug: plug
+          });
+
+          wx.setNavigationBarColor({
+            frontColor: '#000000',//
+            backgroundColor: app.d.bgcolor //页面标题为路由参数
+          });
+          wx.setNavigationBarTitle({
+            title: title,
+            success: function () {
+            },
+          });
+        },
+        fail: function (e) {
+          wx.showToast({
+            title: '网络异常！',
+            duration: 2000
+          });
+        },
+      })
+    }else{
+      app.getUserInfo(that);
+    }
   },
   //上拉事件
   onReachBottom: function () {
@@ -157,45 +245,62 @@ Page({
   },
   onLoad: function (e) {
     var that = this;
-
-    wx.request({
-      url: app.d.ceshiUrl + '&action=Index&m=index',
-      method: 'post',
-      data: {},
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      success: function (res) {
-        var banner = res.data.banner; // 轮播图
-        var twoList = res.data.twoList;     //产品显示
-        var bgcolor = res.data.bgcolor;     //产品显示
-        var plug = res.data.plug;     //抽奖产品
-        var title = res.data.title;
-        app.d.bgcolor = bgcolor;
+    //签到活动弹窗,勿删
+    setTimeout(function(){
+      that.setData({
+        sign_image: app.globalData.userInfo.sign_image, // 签到图片
+        sign_status: app.globalData.userInfo.sign_status // 是否签名
+      })
+      //如果用户今日已签到则不再显示
+      if (app.globalData.userInfo.sign_status == 1){
         that.setData({
-           banner: banner,
-           twoList: twoList,
-           bgcolor: bgcolor,
-           plug: plug
-        });
+          showModal: true
+        })
+      }else{
+        that.setData({
+          showModal: false
+        })
+      }
+    },5000);
+    that.loadProductDetail();
+    // wx.request({
+    //   url: app.d.ceshiUrl + '&action=Index&m=index',
+    //   method: 'post',
+    //   data: {},
+    //   header: {
+    //     'Content-Type': 'application/x-www-form-urlencoded'
+    //   },
+    //   success: function (res) {
+    //     var banner = res.data.banner; // 轮播图
+    //     var twoList = res.data.twoList;     //产品显示
+    //     var bgcolor = res.data.bgcolor;     //产品显示
+    //     var plug = res.data.plug;     //抽奖产品
+    //     var title = res.data.title;
+    //     app.d.bgcolor = bgcolor;
+    //     that.setData({
+    //        banner: banner,
+    //        twoList: twoList,
+    //        bgcolor: bgcolor,
+    //        plug: plug
+    //     });
         
-        wx.setNavigationBarColor({
-          frontColor: '#ffffff',//
-          backgroundColor: app.d.bgcolor //页面标题为路由参数
-        });
-        wx.setNavigationBarTitle({
-          title: title,
-          success: function () {
-          },
-        });
-      },
-      fail: function (e) {
-        wx.showToast({
-          title: '网络异常！',
-          duration: 2000
-        });
-      },
-    })
+    //     wx.setNavigationBarColor({
+    //       frontColor: app.d.frontColor,//
+    //       backgroundColor: app.d.bgcolor //页面标题为路由参数
+    //     });
+    //     wx.setNavigationBarTitle({
+    //       title: title,
+    //       success: function () {
+    //       },
+    //     });
+    //   },
+    //   fail: function (e) {
+    //     wx.showToast({
+    //       title: '网络异常！',
+    //       duration: 2000
+    //     });
+    //   },
+    // })
   },
 
   preventTouchMove: function () {
@@ -251,7 +356,6 @@ Page({
       //设置用户信息本地存储
       try {
         wx.setStorageSync('userInfo', e.detail.userInfo);
-        console.log(e.detail.userInfo)
       } catch (e) {
         wx.showToast({
           title: '系统提示:网络错误！',

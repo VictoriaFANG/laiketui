@@ -23,7 +23,7 @@ Page({
   },
   onLoad: function (options) {
     wx.setNavigationBarColor({
-      frontColor: '#ffffff',//
+      frontColor: app.d.frontColor,//
       backgroundColor: app.d.bgcolor //页面标题为路由参数
     })
     var that = this;

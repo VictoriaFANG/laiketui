@@ -48,6 +48,7 @@
   <view class="nav_right">
   <scroll-view scroll-y="true" style="height:100%">
     <!--如果有数据，才遍历项-->
+    <image class='cimages' wx:if="{{cateItems[curIndex].cimgurl != ''}}" src="{{cateItems[curIndex].cimgurl}}"></image>
     <view wx:if="{{cateItems[curIndex].ishaveChild}}">
       <block wx:for="{{cateItems[curIndex].children}}">
         <view class="nav_right_items">

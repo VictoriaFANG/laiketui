@@ -35,7 +35,12 @@
     </swiper>
     <view class='dd_details_box'>
       <view class='dd_details_jj'>
-        <view>
+
+         <view style='font-size:50rpx;color:#eb3737;margin:15rpx 0;' wx:if="{{earn}}" >
+          <text class='fuhao'>¥</text> {{qj_price}}/<text class='fuhao'>赚¥{{earn}}</text>
+         </view>
+
+        <view wx:else>
           <view wx:if="{{type1 == 1}}">
             ￥ <text style='font-size:40rpx;'>{{itemData.price11}}</text>
           </view>
@@ -44,6 +49,7 @@
           </block>
           <view style='color:#666;font-size:25rpx;'>价格 <text style='text-decoration:line-through;'>￥{{qj_yprice}}</text></view>
         </view>
+        
       </view>
       <view class='dd_details_text'>
         <view class='ovh1' style='-webkit-line-clamp:2;float:left;font-size:32rpx;color:#333;font-weight:700;width:85%;'>{{itemData.name}}</view>
@@ -82,6 +88,7 @@
       <view style='clear:both;'></view>   
       </button>
   </form> 
+
     <view class='qgx'></view>
     <!-- 悬浮客服窗口 -->
     <view class='kffd'>
@@ -110,17 +117,19 @@
       <view class="commodity_attr_list" catchtouchmove="preventTouchMove">
         <!--每组属性-->
         <scroll-view scroll-y="true" style="height:100%;">     
-        <view class="attr_box" catchtouchmove="preventTouchMove" wx:for="{{attrValueList}}" wx:key="key" wx:for-item="attrValueObj" wx:for-index="attrIndex">
-            <!--属性名-->
-            <view class="attr_name">{{attrValueObj.attrKey}}</view>
-            <!--属性值-->
-            <view class="attr_value_box">
-              <!--每个属性值-->
-              <view class="attr_value {{attrIndex==firstIndex || attrValueObj.attrValueStatus[valueIndex]?(value==attrValueObj.selectedValue?'attr_value_active':''):'attr_value_disabled'}}" bindtap="selectAttrValue" data-status="{{attrValueObj.attrValueStatus[valueIndex]}}"
-                data-value="{{value}}" data-suk="{{attrValueObj.suk}}" data-key="{{attrValueObj.attrKey}}" data-index="{{attrIndex}}" data-selectedvalue="{{attrValueObj.selectedValue}}" wx:for="{{attrValueObj.attrValues}}" wx:key="key" wx:for-item="value"
-                wx:for-index="valueIndex">{{value}}</view>
-            </view>
-          </view>
+<!-- 属性选择 -->
+<view wx:for="{{attrList}}" wx:for-index="idx" wx:key="userInfoListId" class="outStyle">
+  <view class='outStyleText textStyle buttonPaddingStyle'>{{item.attrName}}</view>
+  <view class='typeStyle textStyle'>
+    <view wx:for="{{item.attr}}" data-item='{{item.attr[index]}}' data-index='{{index}}' data-idx='{{idx}}' wx:key="userInfoListId" bindtap="onChangeShowState" wx:for-item="items">
+      <view class="{{items.enable == true ?(items.select==true?'orange':'back') : 'bai'}} textStyle buttonPaddingStyle">
+        {{items.attributeValue}}
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 属性选择 -->
+
 <view class="shu" wx:if="{{type1 != 1}}">
  <text class="cun">购买数量</text>
             <view class="dian">
@@ -136,7 +145,7 @@
           </view>
         </scroll-view>
       </view>
-      <view wx:if="{{!xefl}}" class="footc" data-type="{{paytype}}" id="{{paytype}}" type="primary" bindtap="submit" style='background:{{bgcolor}}'> 确定 </view>
+      <view wx:if="{{!xefl}}" class="footc" data-type="{{paytype}}" id="{{paytype}}" type="primary" bindtap="submit" style='background:#FF6347'> 确定 </view>
       <block wx:else>
         <view wx:if="{{type1 == 1}}">
           <view class="xgfootc1" data-type="buynow" id="buynow" type="primary" bindtap="submit" style='background:#f7c747;'> 单独购买 </view>
@@ -239,6 +248,12 @@
                   <image src='/images/icon_bad_select.png' class='comments_icon'></image><text>差评</text>
                 </view>
               </view>
+
+              <view class="tag" wx:if="{{item.reply.length > 1}}">
+                    <view class='noe'></view>掌柜回复：{{item.reply}}
+              </view>
+
+
             </view>
           </block>
         </view>
@@ -257,11 +272,11 @@
           </view>
         </view>
         <!--获取formid  -->
-        <view class="white w40 fl_l" style='background:#f85;' bindtap="setModalStatus" data-status="1" data-type="buynow">单独买 ¥ {{itemData.price_yh}}</view>
+        <view class=" w40 fl_l" style='background:#f7c747;' bindtap="setModalStatus" data-status="1" data-type="buynow">单独买 ¥ {{itemData.price_yh}}</view> 
 
         <form bindsubmit="getUserformid" report-submit="true" data-status="1" data-type="canjiapintuan" style='width:40%;'>
-          <button type="primary" formType="submit" style='width:40.6%;height:50px;background: #dd2727;color:#fff !important;display:flex;flex-direction:column;justify-content:center;border-radius:0;margin:0;float:left;'> 
-            <view class=" fl_l bg_red white" bindtap="setModalStatus" data-status="1" data-type="canjiapintuan" style='font-size:14px;'>
+          <button type="primary" formType="submit" style='width:40.6%;height:50px;background: #ec612a;color:#fff !important;display:flex;flex-direction:column;justify-content:center;border-radius:0;margin:0;float:left;'> 
+            <view class=" fl_l" bindtap="setModalStatus" data-status="1" data-type="canjiapintuan" style='font-size:14px;'>
           参加拼团 ¥{{itemData.price11}}
             </view>
           </button>
@@ -315,16 +330,16 @@
   </view> 
 <view  class='fx_box'> 
   
- <view class='fx_img_box'>
+ <view wx:if="{{share.friends}}" class='fx_img_box'>
      <button open-type="share" hover-class="button-hover" style='line-height:normal;border:0;border-radius:0px;padding:0;font-size:12px;'>
         <view><image class='fx_img' src='/images/wx.png'></image></view>
         <view>微信好友</view>
      </button>
-    </view>
-    <view class='fx_img_box' bindtap='user_share' >
+  </view>
+  <view wx:if="{{share.friend}}" class='fx_img_box' bindtap='user_share' >
     <view> <image class='fx_img' src='/images/pyq.png'></image></view> 
       <view>朋友圈</view>
-    </view>
+  </view>
 </view>
 
 </view>
@@ -336,7 +351,7 @@
         <view class='close_share' bindtap='close_share'>x</view>
         </view>
         <image src="{{imagePath}}" data-src="{{imagePath}}" catchtap="previewImage" class='shengcheng'></image>
-        <button class='baocun' style='background:{{bgcolor}};' bindtap='baocun'>保存相册</button>
+        <button class='baocun' style='background:#FF6347;' bindtap='baocun'>保存相册</button>
         <view class='share_bottom'>保存图片到手机后，您可到朋友圈分享该商品图片</view>
     </view>
   </view>

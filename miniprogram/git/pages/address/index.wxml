@@ -31,7 +31,7 @@
 </view>
 </radio-group>
 <navigator url="../address/address?cartId={{cartId}}" style='width: 94%;margin: 0 auto;margin-bottom: 50px;'>
-  <view hidden="{{hiddenAddress}}" class="add-address" style="background-color:{{bgcolor}};">
+  <view hidden="{{hiddenAddress}}" class="add-address" style="background-color:#09bb07;">
     <view class="iconfont icon-tianjia"></view>
     <view style='color:#fff'>新增地址</view>
   </view>

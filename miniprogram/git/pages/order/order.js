@@ -124,7 +124,7 @@ Page({
 			}
 		}
 		wx.setNavigationBarColor({
-			frontColor: '#ffffff',
+			frontColor: app.d.frontColor,
 			backgroundColor: app.d.bgcolor, //页面标题为路由参数
 			animation: {
 				duration: 400,
@@ -136,7 +136,7 @@ Page({
 		this.setData({
 			currentTab: parseInt(options.currentTab),
 			isStatus: isStatus,
-			bgcolor: app.d.bgcolor
+      bgcolor: '#FF6347'
 		});
 		this.loadOrderList();
 	},

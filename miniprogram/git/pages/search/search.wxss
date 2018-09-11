@@ -42,13 +42,13 @@ page{
 .nav_left .nav_left_items.active{  
   /*背景色变成白色*/  
   background: #fff;  
-  color: red; 
+  color: #7a896c; 
 }  
 /*右侧栏主盒子*/  
 .nav_right{  
   /*右侧盒子使用了绝对定位*/  
   position: absolute;  
-  top: 25px;  
+  top: 55px;  
   right: 0;  
   flex: 1;  
   /*宽度75%，高度占满，并使用百分比布局*/  
@@ -87,8 +87,7 @@ page{
 {
   color: black;
   font-size: 14px;  
-  text-align: center;
-  margin-top:25px;
+  text-align: center;  
 } 
 .mink::after{
   display:block;content:'';clear:both;
@@ -431,4 +430,9 @@ color:#333;
     transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
   }
+}
+
+.cimages{
+  width:100%;
+  height:145px;
 }

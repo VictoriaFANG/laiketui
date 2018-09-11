@@ -5,25 +5,23 @@ App({
     appKey:"", // 小程序密钥
     purchase: 0,//设置购物车刷新
     indexchase: false,//设置首页刷新
-    // 线上后台请求接口路径  下载后修改此路径
-    ceshiUrl: "http://test.com/LKT/index.php?module=api&software_name=3&edition=1.0", 
-    // 本地测试时使用后台请求接口路径
-    // localhost: 'http://localhost/LKT/index.php?module=api', 
+    frontColor:'#000000',
+    one:false,
+    bf_color:'#FF6347',
+    // 后台请求接口路径  如需修改系统请求路径还需要修改request.js中的url
+    ceshiUrl: 'http://test.com/LKT/index.php?module=api&software_name=3&edition=1.0', 
   },
-  onLaunch: function () {
+  onLaunch: function (options) {
     //调用API从本地缓存中获取数据
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs);
-    this.getUserInfo();
-    request.tt = '122';
-    this.request = request;
-    // console.log(this.request)
+    this.request = request;  
   },
   //控制授权登入
   userlogin: function (login) {
     if (this.globalData.userlogin) {
-      console.log('登入了')
+      
     } else {
       if (login){
         wx.switchTab({
@@ -37,8 +35,11 @@ App({
 
     }
   },
-  onShow: function () {
-      console.log('重新加载了');
+  onShow: function (options) {
+    console.log(options)
+      var referee_openid = options.query.userid ? options.query.userid:'';
+      this.globalData.referee_openid = referee_openid;
+      this.getUserInfo();
   },
   onPullDownRefresh: function () {
     wx.showNavigationBarLoading() //在标题栏中显示加载
@@ -50,23 +51,36 @@ App({
   },
   getUserInfo: function (cb, stype){
     var that = this;
-    //调用登录接口  已更新登入借口  
-    wx.login({
-      success: function (res) {
-        var code = res.code;
-        that.globalData.code = res.code;
-        //取出本地存储用户信息，解决需要每次进入小程序弹框获取用户信息
-        var userinfo = wx.getStorageSync('userInfo');
-        if (userinfo.length > 1){
-          that.globalData.userInfo = userinfo;
-        }     
-        that.getUserSessionKey(code, cb);
-      }
-    });
+
+    if (this.d.one){
+      this.d.one = false;
+      setTimeout(function () {
+        that.getUserInfo(cb, stype);
+      }, 1500);
+    }else{
+      this.d.one = true;
+      //调用登录接口  已更新登入接口  
+      wx.login({
+        success: function (res) {
+          var code = res.code;
+          that.globalData.code = res.code;
+          //取出本地存储用户信息，解决需要每次进入小程序弹框获取用户信息
+          var userinfo = wx.getStorageSync('userInfo');
+          if (userinfo.length > 1) {
+            that.globalData.userInfo = userinfo;
+          }
+          that.getUserSessionKey(code, cb);
+        }
+      });
+    }
+    
+
+    //添加控制在同一秒执行同一个方法两次
+
+
   },
   // 获取用户会话密钥
   getUserSessionKey: function (code, cb, stype){
-    console.log(code, cb, stype)
     var that = this;
     wx.request({
       url: that.d.ceshiUrl + '&action=app&m=index',
@@ -82,7 +96,7 @@ App({
         var bgcolor = res.data.bgcolor;
         that.d.bgcolor = bgcolor;
         wx.setNavigationBarColor({
-          frontColor: '#ffffff',//
+          frontColor: that.d.frontColor,//
           backgroundColor: bgcolor//页面标题为路由参数
         })
         if(data.status==0){
@@ -94,7 +108,6 @@ App({
         }
         //设置openid 和 session_key
         that.globalData.userInfo = data;
-
         //存储用户信息
         wx.request({
           url: that.d.ceshiUrl + '&action=app&m=user',
@@ -104,7 +117,7 @@ App({
             headimgurl: that.globalData.userInfo.avatarUrl,
             sex: that.globalData.userInfo.gender,
             openid: that.globalData.userInfo.openid,
-            p_openid: that.globalData.userInfo.referee_openid,
+            p_openid: that.globalData.referee_openid,
           },
           header: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -128,7 +141,6 @@ App({
                 cb.getPhoneNumber(stype)
               } else {
                 cb.loadProductDetail();
-                console.log('执行回电')
               }
             }
           },

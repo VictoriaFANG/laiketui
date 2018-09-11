@@ -57,10 +57,10 @@
       <input name="address" type="text" value="{{address}}" placeholder="详细地址"/>
     </view>
      <view class="btn-area"> 
-      <button formType="submit" style='background-color:{{bgcolor}};'>保存</button>
+      <button formType="submit" style='background-color:#09bb07;'>保存</button>
      </view> 
      <view class="btn-area"> 
-      <button  bindtap="aotuAddress" style='background-color:{{bgcolor}};'>导入微信收货地址</button>
+      <button  bindtap="aotuAddress" style='background-color:#09bb07;'>导入微信收货地址</button>
      </view> 
   </form>
 </view>

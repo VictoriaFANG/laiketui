@@ -51,7 +51,7 @@
       <input name="address" type="text" value="{{address[0]['address']}}" placeholder="详细地址"/>
     </view>
      <view class="btn-area"> 
-      <button formType="submit" style='background-color:{{bgcolor}};'>保存</button>
+      <button formType="submit" style='background-color:#09bb07;'>保存</button>
      </view> 
   </form>
 </view>

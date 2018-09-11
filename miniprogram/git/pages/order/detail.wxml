@@ -101,7 +101,8 @@
       <view class='ddlb_v'>时间：<text class='fright'>{{add_time}}</text></view>
       <view class='ddlb_v'>商品总价：<text class='fright'>￥{{pro_price}}</text></view>
       <view class='ddlb_v' wx:if="{{coupon_money != 0}}">优惠券：<text class='fright'>-￥{{coupon_money}}</text></view>
-      <view class='ddlb_v' wx:if="{{allow != 0}}">积分：<text class='fright'>-{{allow}}</text></view>
+      <view class='ddlb_v' wx:if="{{consumer_money != 0}}">消费金：<text class='fright'>-{{consumer_money}}</text></view>
+      <view class='ddlb_v' wx:if="{{red_packet != 0}}">红包：<text class='fright'>-{{red_packet}}</text></view>
       <view class='ddlb_v' wx:if="{{coupon_activity_name != ''}}">满减：<text class='fright'>{{coupon_activity_name}}</text></view>
       
       <view class='ddlb_v'>运费：<text class='fright'>￥0.00</text></view>

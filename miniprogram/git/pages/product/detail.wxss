@@ -11,7 +11,31 @@ flex:1;
 -webkit-tap-highlight-color:transparent;
 margin-left: 0;
 }
+.fuhao{
+  font-size: 16px;
+}
+.tag {
+  width: 90%;
+  position: relative;
+  background-color: #eee;
+  margin:14px auto 0 auto;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 10px;
+  color: #666;
+}
 
+.noe {
+  display: block;
+  border-width: 10px;
+  position: absolute;
+  left: 10px;
+  top: -20px;
+  border-style: solid dashed dashed;
+  border-color: transparent transparent #eee transparent;
+  font-size: 0;
+  line-height: 0;
+}
 .container {
   position: relative;
   flex: 1;
@@ -836,4 +860,65 @@ button[class="baocun"]::after{
     bottom:0;
   }
 
+}
+
+
+/**index.wxss**/
+
+.orange {
+  border-radius: 10px;
+  background-color: #f19e39;
+  margin-right: 10px;
+  color: #fff;
+}
+
+.back {
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  margin-right: 10px;
+  color: #000;
+}
+
+.bai {
+  border-radius: 10px;
+  background-color: #fff;
+  margin-right: 10px;
+  color: #999;
+}
+
+.typeStyle {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+}
+
+.outStyle {
+  display: flex;
+  flex-direction: column;
+}
+
+.outStyleText {
+  display: flex;
+  flex-direction: column;
+  color: #999;
+}
+
+.shuru {
+  position: fixed;
+  height: 100rpx;
+  width: 100%;
+  text-align: left;
+  background-color: #efefef;
+  border-top: 1px solid #ccc;
+  bottom: 0rpx;
+  _position: absolute;
+}
+.buttonPaddingStyle {
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+.textStyle {
+  font-size:14px;
 }

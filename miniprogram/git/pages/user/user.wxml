@@ -28,8 +28,12 @@
       <!-- 用户基本信息 -->
       <view class='user_top' style="background-color:{{bgcolor}}">
         <view class='user_top_two'>
-          <image src="{{user.headimgurl ? user.headimgurl:'../../images/users.png'}}" />
-          <text class='user_mc'>{{user.wx_name}}</text>
+              <image style='display:block;' src="{{user.headimgurl ? user.headimgurl:'../../images/users.png'}}" />
+              <view class='user_mc' bindtap="copyText" data-text="{{user.user_id}}" style='display:block;'>
+                <view>{{user.wx_name}}</view>
+                <text class='username_font'>用户ID：{{user.user_id}}</text>
+                <text class='username_font' wx:if="{{tjr}}" style="margin-left: 16px;">推荐人：{{tjr}}</text>
+              </view>
         </view>  
         <!-- 我的订单 -->
         <view class='user_dd' >
@@ -81,6 +85,20 @@
               </navigator>
             </view> 
           </view>   
+          <!-- 功能列表 -->
+          <view class="function" style='background:#fff'>
+            <block wx:for="{{plug_ins}}" wx:key="{{item.id}}">
+              <navigator class="function_list" url="{{item.subtitle_url}}">
+                <view class='function_left'>
+                  <image style="width: 25px;height: 25px;margin: auto;" src='{{item.subtitle_image}}'></image>
+                  <view class='function_text'>{{item.subtitle_name}} </view>
+                </view>
+                <view class='function_right jiantou'>
+                  <image src="../../images/x_right.png"></image>
+                </view>
+              </navigator>
+            </block>
+          </view>
           <view class="function" style='background:#fff'>
             <block wx:for="{{list}}" wx:key="{{item.id}}">
               <navigator class="function_list" url="../{{item.url}}">
@@ -93,6 +111,16 @@
                 </view>
               </navigator>
             </block>
+          </view>
+          <view class="hh" >
+            <navigator url="../article/article?id={{item.Article_id}}" wx:for="{{article}}" wx:key="{{item.Article_id}}">
+              <view class="qbdd mt10 jiantou">
+                <span class="font_14 c3">{{item.Article_title}}</span>
+                <span class="fl_r c9 font_12 l_h20" hover-class="none" style="margin-right: 5px;height: 100%;">{{item.Article_prompt}}
+                  <image src="../../images/x_right.png" style="border: 0;border-radius: 0;margin: auto;"></image>
+                </span>
+              </view>
+            </navigator>
           </view>
           <view class='bottom'>
             <view class='bottom_1'><image src="{{logo}}"></image></view>

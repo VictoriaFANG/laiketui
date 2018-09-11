@@ -271,7 +271,6 @@ page{
 .cla{
       font-family: '微软雅黑';
       color: #ccc;
-
 }
 .heji{
   display:flex;

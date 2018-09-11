@@ -5,10 +5,9 @@
 + 服务端api基于php5.6+nginx+MySQL
 
 ### 安装说明
-+ 复制系统管理--系统配置--复制*小程序api域名  
-+ 修改app.js 的 ceshiUrl 的内容 为你刚复制的请求地址
-+ 示例：ceshiUrl: "http://test.com/LKT/index.php?module=api&software_name=3&edition=1.0",
-+ 保存刷新
++ 复制系统
++ 功能和数据库参考来客电商管理后台
++ 服务端api基于php5.6+nginx+MySQL
 
 
 **注意：当前版本功能已申请软著，请勿商用。如需商用 请联系 湖南壹拾捌号网络技术有限公司 **
