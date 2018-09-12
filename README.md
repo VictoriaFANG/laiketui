@@ -92,9 +92,9 @@ MYSQL5.5+
 
 #### 小程序配置
 
-+ 请求地址需要为https,
++ 请求地址需要为https
 ![地址路径](https://lg-8tgp2f4w-1252524862.cos.ap-shanghai.myqcloud.com/20180912101136.png)
 + 更目录下 修改此两个文件的请求地址
------app.js，
+-----app.js
 -----request.js
 ![小程序js修改](https://lg-8tgp2f4w-1252524862.cos.ap-shanghai.myqcloud.com/20180912100658.png)
