@@ -68,10 +68,8 @@ MYSQL5.5+
 
 #### QQ交流群
 340645969
-
 微信交流群
-https://images.gitee.com/uploads/images/2018/0918/152929_826538db_1218936.png "微信图片_20180918125853 - 副本.png"
-
+![微信交流群](https://images.gitee.com/uploads/images/2018/0918/153153_0d4177f9_1218936.png "微信图片_20180918125853 - 副本.png")
 
 #### 线上部署
 1. 进入目录/app 下载后台代码
