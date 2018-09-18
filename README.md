@@ -68,6 +68,7 @@ MYSQL5.5+
 
 #### QQ交流群
 340645969
+
 微信交流群
 
 ![微信二维码](https://images.gitee.com/uploads/images/2018/0918/153522_c87bcd4b_1218936.png "微信图片_20180918153701.png")
