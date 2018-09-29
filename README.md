@@ -7,17 +7,10 @@
 
 ![扫码体验](https://xiaochengxu.laiketui.com/xiaochengxu.jpeg)
 
-![首页](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172029.jpg)
-
-![分类](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172012.jpg)
-
-![商品列表](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172020.jpg)
-
-![商品详情](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171938.jpg)
-
-![购物车](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172005.jpg)
-
-![订单中心](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171957.jpg)
+![首页](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172029.jpg)|![分类](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172012.jpg)
+---|---
+![商品列表](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172020.jpg)|![商品详情](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171938.jpg)
+![购物车](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172005.jpg)|![订单中心](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171957.jpg)
 
 
 #### 更新记录
