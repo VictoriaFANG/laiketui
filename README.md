@@ -12,6 +12,10 @@
 ![商品列表](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172020.jpg)|![商品详情](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171938.jpg)
 ![购物车](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172005.jpg)|![订单中心](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171957.jpg)
 
+#### 游戏插件
+![九宫格游戏首页](https://images.gitee.com/uploads/images/2018/0930/104751_d5d6a94a_2029865.jpeg "WechatIMG7.jpeg")|![游戏排行](https://images.gitee.com/uploads/images/2018/0930/104805_8abc5235_2029865.jpeg "WechatIMG8.jpeg")
+---|---
+
 
 #### 更新记录
 1. 2018-07-29 更新管理账户添加问题
