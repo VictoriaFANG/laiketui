@@ -3,16 +3,19 @@
 #### QQ交流群
 340645969
 
-#### 项目介绍
-非常惭愧地说，最开始是完全模仿着拼多多的功能模块来做这套系统，也仅仅是为了磨合团队，提高业务水平而已。
+#### 来客电商微信小程序客户端截图(扫码体验效果更好！！！！)
 
-可谁知道，做完了拼团基本功能，还发现有评价没有做，好吧，继续磨合，等到做完了评价功能，觉得还不够好，再加一个抽奖功能，就这样，反反复复（大概过了四个月的样子），这系统就像滚雪球一样，越滚越大，现在我们又在增加分销功能，也正在做APP界面了。
+![扫码体验](https://xiaochengxu.laiketui.com/xiaochengxu.jpeg)
 
-记不清是哪个日子，我突然意识到，“做了10多年的软件，我总该做几件对社会有意义的事情吧？好！开源！”，就这样，我们这套模仿着拼多多的系统走上了开源之路。
+![首页](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172029.jpg)|![分类](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172012.jpg)
+---|---
+![商品列表](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172020.jpg)|![商品详情](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171938.jpg)
+![购物车](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172005.jpg)|![订单中心](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171957.jpg)
 
-这世界上没有完美的人，当然更不会有完美的系统了，但小编相信，只要用的人多，最好给我们当当免费的产品经理，偶尔支持下我们，买我们的高级版本，小编相信这项目还是可以继续玩下去的。
+#### 游戏插件
+![九宫格游戏首页](https://images.gitee.com/uploads/images/2018/0930/104751_d5d6a94a_2029865.jpeg "WechatIMG7.jpeg")|![游戏排行](https://images.gitee.com/uploads/images/2018/0930/104805_8abc5235_2029865.jpeg "WechatIMG8.jpeg")
+---|---
 
-在此，我要感谢我的团队，基本上每天都在加班，终于在一个又一个的上线日期（PS：原因是不断地自我调试，不断地增加小功能，上线的日期一拖再拖）把我们的系统给弄上线了，感谢你们。
 
 #### 更新记录
 1. 2018-07-29 更新管理账户添加问题
@@ -38,6 +41,14 @@
 21. 2018-09-19 设计抽奖和建立数据库
 22. 2018-09-20 修改“添加新的抽奖活动”的一些功能
 23. 2018-09-21 完善签到参数设置
+24. 2018-09-25 完善积分参数设置
+25. 2018-09-26 添加九宫格抽奖模式
+26. 2018-09-27 设置抽奖九宫格
+27. 2018-09-28 设置抽奖配置
+28. 2018-09-29 设置九宫格中奖页面
+29. 2018-09-30 九宫格抽奖规则设置
+30. 2018-10-08 设置十二宫格抽奖的积消费分排行榜
+
 #### 软件架构
 PHP5.6+
 MYSQL5.5+
@@ -84,24 +95,6 @@ MYSQL5.5+
 + index.php  核心系统文件  ————  首页逻辑处理等 直接上传到服务器
 + 具体安装教程可前往官网下载 [http://www.laiketui.com](http://www.laiketui.com)
 3. 进入目录 miniprogram  /  zip 下载小程序端代码
-
-#### 来客电商微信小程序客户端截图(扫码体验效果更好！！！！)
-
-![扫码体验](https://xiaochengxu.laiketui.com/xiaochengxu.jpeg)
-
-![首页](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172029.jpg)
-
-![分类](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172012.jpg)
-
-![商品列表](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172020.jpg)
-
-![商品详情](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171938.jpg)
-
-![购物车](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716172005.jpg)
-
-![订单中心](https://xiaochengxu.laiketui.com/duan/LKT/images/auto-orient/20180716171957.jpg)
-
-
 
 
 #### 小程序配置
